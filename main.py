@@ -10,8 +10,9 @@ def get_comic(random_number_comic):
     comic_url = f'https://xkcd.com/{random_number_comic}/info.0.json'
     response = requests.get(comic_url)
     response.raise_for_status()
-    comic_url = response.json()['img']
-    comic_comment = response.json()['alt']
+    comic = response.json()
+    comic_url = comic['img']
+    comic_comment = comic['alt']
     return comic_url, comic_comment
 
 
@@ -30,7 +31,8 @@ def publish_comic(bot, chat_id, folder_name, comic_comment, random_number_comic)
 def main():
     load_dotenv()
     folder_name = 'images'
-    random_number_comic = random.randint(1, 2700)
+    max_comic_number = 2700
+    random_number_comic = random.randint(1, max_comic_number)
     chat_id = os.environ['TG_CHAT_ID']
     bot = telegram.Bot(token=os.environ['TG_TOKEN'])
 
